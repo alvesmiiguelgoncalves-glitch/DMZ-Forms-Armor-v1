@@ -88,30 +88,7 @@ dependencies {
     implementation fg.deobf("curse.maven:dragonmine-z-1136088:${dmz_curse_file_id}")
 }
 
-tasks.named('processResources', ProcessResources).configure {
-    filteringCharset = 'UTF-8'
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-
-    def replaceProperties = [
-            minecraft_version      : minecraft_version,
-            minecraft_version_range: minecraft_version_range,
-            forge_version_range    : forge_version_range,
-            loader_version_range   : loader_version_range,
-            mod_id                 : mod_id,
-            mod_name               : mod_name,
-            mod_license            : mod_license,
-            mod_version            : mod_version,
-            mod_authors            : mod_authors,
-            mod_credits            : mod_credits,
-            mod_description        : mod_description,
-            dmz_version_range      : dmz_version_range
-    ]
-    inputs.properties replaceProperties
-
-    filesMatching(['META-INF/mods.toml']) {
-        expand replaceProperties
-    }
-}
+// mods.toml e pack.mcmeta tem valores fixos (sem placeholders do Gradle) de proposito.
 
 tasks.named('jar', Jar).configure {
     manifest {
@@ -120,7 +97,7 @@ tasks.named('jar', Jar).configure {
                 'Specification-Vendor'    : mod_authors,
                 'Specification-Version'   : '1',
                 'Implementation-Title'    : project.name,
-                'Implementation-Version'  : project.jar.archiveVersion,
+                'Implementation-Version'  : mod_version,
                 'Implementation-Vendor'   : mod_authors,
                 'MixinConfigs'            : "${mod_id}.mixins.json"
         ])
